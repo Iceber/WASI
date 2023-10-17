@@ -11,17 +11,6 @@
 (module $wasi_snapshot_preview1
   ;;; Linear memory to be accessed by WASI functions that need it.
   (import "memory" (memory))
-
-  ;;; Read command-line argument data.
-  ;;;
-  ;;; The size of the array should match that returned by `args_sizes_get`.
-  ;;;
-  ;;; Each argument is expected to be `\0` terminated.
-  ;;;
-  ;;; The first argument should be a string containing the "name" of the
-  ;;; program. This need not be a usable filesystem path or even file name,
-  ;;; and may even be a fixed string. Subsequent arguments are the arguments
-  ;;; passed to the program by the user.
   (@interface func (export "args_get")
     (param $argv (@witx pointer (@witx pointer u8)))
     (param $argv_buf (@witx pointer u8))
@@ -34,9 +23,7 @@
     (result $error (expected (tuple $size $size) (error $errno)))
   )
 
-  ;;; Read environment variable data.
-  ;;; The sizes of the buffers should match that returned by `environ_sizes_get`.
-  ;;; Key/value pairs are expected to be joined with `=`s, and terminated with `\0`s.
+
   (@interface func (export "environ_get")
     (param $environ (@witx pointer (@witx pointer u8)))
     (param $environ_buf (@witx pointer u8))
